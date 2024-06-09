@@ -1,0 +1,6 @@
+Revisi:
+1) Input tambahkan Disposisi    (done)
+2) Disposisi masuk Data Dokumen (done)
+2) Ada dokumen masuk dan keluar (done)
+3) Buatkan Laporan/Report nya
+4) Buat Login
