@@ -17,21 +17,21 @@
 -- Dumping structure for table test_db.tbl_berita
 CREATE TABLE IF NOT EXISTS `tbl_berita` (
   `no_id` int NOT NULL AUTO_INCREMENT,
-  `nomor_agenda` varchar(25) NOT NULL,
-  `dari` varchar(25) NOT NULL,
-  `kepada` varchar(25) NOT NULL,
-  `tembusan` varchar(25) NOT NULL,
-  `klasifikasi` varchar(25) NOT NULL,
-  `nomor_surat` varchar(25) NOT NULL,
-  `twu` varchar(25) NOT NULL,
-  `isi` varchar(250) NOT NULL,
-  `file_upload` text NOT NULL,
-  `disposisi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nomor_agenda` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dari` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kepada` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tembusan` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `klasifikasi` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nomor_surat` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `twu` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isi` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_upload` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `disposisi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`no_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table test_db.tbl_berita: ~11 rows (approximately)
+-- Dumping data for table test_db.tbl_berita: ~12 rows (approximately)
 INSERT INTO `tbl_berita` (`no_id`, `nomor_agenda`, `dari`, `kepada`, `tembusan`, `klasifikasi`, `nomor_surat`, `twu`, `isi`, `file_upload`, `disposisi`, `status`) VALUES
 	(8, '005', 'Wakasal', 'Koarmada I', 'Puspomal', 'Rahasia', '001/WAT/2023', '0123.0987', 'Mengajukan Permohonan Usul', '2. Siti Sopiyani 462611.pdf', '', 0),
 	(9, '006', 'Kasal', 'Koarmada I', 'Puspomal', 'Rahasia', '001/WAT/2023', '0123.0987', 'permohonan', '3. Justina Karurukan 462612.pdf', '', 0),
@@ -49,9 +49,9 @@ INSERT INTO `tbl_berita` (`no_id`, `nomor_agenda`, `dari`, `kepada`, `tembusan`,
 -- Dumping structure for table test_db.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -41,24 +41,29 @@ if (isset($_POST['login'])) {
   </head>
   <body>
     <div class="container d-flex justify-content-center align-items-center" style="height: 100vh">
-        <div class="card w-75 shadow-lg">
-            <div class="row">
-                <div class="col" style="background-color: black;">
-                    <img src="gambar/logo.png" class="w-100" >
-                </div>
-                <div class="col p-5">
-                    <h2>Login</h2>
-                    <form method="POST">
-                        <div class="mb-3">
-                        <label for="user_name" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="user_name" name="user_name" required>
-                        </div>
-                        <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="login">Login</button>
-                    </form>                 
+        <div>
+            <marquee behavior="1" direction="1">
+                <h1>E - Dokber</h1>
+            </marquee>
+            <div class="card w-100 shadow-lg">
+                <div class="row">
+                    <div class="col" style="background-color: black;">
+                        <img src="gambar/logo.png" class="w-100" >
+                    </div>
+                    <div class="col p-5">
+                        <h2>Login</h2>
+                        <form method="POST">
+                            <div class="mb-3">
+                            <label for="user_name" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="user_name" name="user_name" required>
+                            </div>
+                            <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" name="login">Login</button>
+                        </form>                 
+                    </div>
                 </div>
             </div>
         </div>
