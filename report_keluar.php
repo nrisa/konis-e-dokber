@@ -11,7 +11,19 @@ $koneksi = new mysqli($servername, $username, $password, $dbname);
 if ($koneksi->connect_error) {
     die("Koneksi gagal: " . $koneksi->connect_error);
 }
+
+// Set default tanggal jika tidak ada filter
+$start_date = $_GET['start_date'] ?? date('Y-m-d');
+$end_date = $_GET['end_date'] ?? date('Y-m-d');
+
+// Query untuk mengambil data dari tabel tbl_berita dengan filter tanggal
+$query = "SELECT * FROM tbl_berita 
+          WHERE status = 1
+          AND DATE(twu) BETWEEN '$start_date' AND '$end_date'
+          ORDER BY no_id DESC";
+$tampil = mysqli_query($koneksi, $query);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +32,7 @@ if ($koneksi->connect_error) {
   <title>Data Dokumen</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="data.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
   .table-responsive {
     width: 100% !important;
@@ -37,18 +50,19 @@ if ($koneksi->connect_error) {
   <header>
     <div class="container">
       <h1>e-Dokber</h1>
-      <nav>
-        <ul>
-          <li><a href="home.php">Home</a></li>
-          <li><a href="input.php">Input Dokumen</a></li>
-          <li><a href="data.php">Dokumen Masuk</a></li>
-          <li><a href="data_keluar.php">Dokumen Keluar</a></li>
-          <li class="nav-item"><a class="nav-link" href="register.php">Pengguna</a></li>
-          <li class="nav-item"><a class="nav-link" href="report.php">Laporan Masuk</a></li>
-          <li class="nav-item"><a class="nav-link" href="report_keluar.php">Laporan Keluar</a></li>
-          <li><a href="logout.php">Logout</a></li>
-        </ul>
-      </nav>
+            <nav>
+                <ul class="nav">
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="home.php">Home</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="input.php">Input Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="input_keluar.php">Input Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="data.php">Dokumen Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="data_keluar.php">Dokumen Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="register.php">Pengguna</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="report.php">Laporan Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="report_keluar.php">Laporan Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="logout.php">Logout</a></li>
+                </ul>
+            </nav>
     </div>
   </header>
 
@@ -56,12 +70,21 @@ if ($koneksi->connect_error) {
   <section id="data-dokumen">
     <div class="container">
      <h2>Laporan Keluar</h2>
-     <a href="pdf_keluar.php" class="btn btn-primary" target="_blank">Download PDF</a>
+     
+     <!-- Form Filter Tanggal -->
+     <form method="GET" class="d-flex row gap-3" action="report.php">
+        <label class="col-md align-self-center text-end" for="start_date">Dari Tanggal:</label>
+        <input class="col-md" type="date" class="form-control" id="start_date" name="start_date" value="<?= htmlspecialchars($start_date) ?>">
+        <label class="col-md align-self-center text-end" for="end_date">Sampai Tanggal:</label>
+        <input class="col-md" type="date" class="form-control" id="end_date" name="end_date" value="<?= htmlspecialchars($end_date) ?>">
+        <button class="btn btn-primary col-md" type="submit">Filter</button>
+        <a href="pdf.php?start_date=<?= urlencode($start_date) ?>&end_date=<?= urlencode($end_date) ?>" class="btn btn-primary col-md" target="_blank">Download PDF</a>
+        </form>
+      <br>
+     
+     <!-- Tombol Download PDF -->
+     
      <?php
-        // Query untuk mengambil data dari tabel tbl_berita dengan filter pencarian dan status = 0
-        $query = "SELECT * FROM tbl_berita WHERE status = 1 ORDER BY no_id DESC";
-        $tampil = mysqli_query($koneksi, $query);
-
         if (mysqli_num_rows($tampil) > 0) {
             echo "<div class='table-responsive'>";
             echo "<table border='1'>";
@@ -106,7 +129,6 @@ if ($koneksi->connect_error) {
         } else {
             echo "<p>Data tidak ditemukan!</p>";
         }
-        $koneksi->close();
         ?>
     </div>
   </section>
@@ -117,5 +139,9 @@ if ($koneksi->connect_error) {
       <p>@puskodaltnial - <?=date('Y') ?> </p>
     </div>
   </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb4NjsG6F7lRGuvAN/jDuoSiG6jowMk5igKJAq3GQ5r7LoFo2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-q2i2UQ4MtPSzK/8a7TP5Qf28DFEzDA+S3+L5D+z6u3ZftOF/4M76t21CA8V04Yx7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.4/font/bootstrap-icons.min.js"></script>
 </body>
 </html>

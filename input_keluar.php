@@ -125,14 +125,14 @@ if (isset($_POST['bsimpan'])) {
   <main>
   <section id="input-dokumen">
       <div class="container">
-        <h2>Input Dokumen Masuk</h2>
+        <h2>Input Dokumen Keluar</h2>
         <!-- Form untuk mengunggah dokumen -->
         <?php if ($id): ?>
           <form action="upload.php?id=<?= $id ?>" method="post" enctype="multipart/form-data">
         <?php else: ?>
           <form action="upload.php" method="post" enctype="multipart/form-data">
         <?php endif; ?>
-        <input type="hidden" id="status" name="status" value="0" required>
+        <input type="hidden" id="status" name="status" value="1" required>
           <div>
             <label for="nomor_agenda">Nomor Agenda:</label>
             <input type="text" id="nomor_agenda" name="nomor_agenda" value="<?= $nomor_agenda ?>" required>

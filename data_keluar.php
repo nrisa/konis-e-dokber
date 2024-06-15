@@ -65,7 +65,8 @@ if (isset($_POST['breset'])) {
         
         <ul>
           <li><a href="home.php">Home</a></li>
-          <li><a href="input.php">Input Dokumen</a></li>
+          <li><a href="input.php">Input Masuk</a></li>
+          <li><a href="input_keluar.php">Input Keluar</a></li>
           <li><a href="data.php">Dokumen Masuk</a></li>
           <li><a href="data_keluar.php">Dokumen Keluar</a></li>
           <li class="nav-item"><a class="nav-link" href="register.php">Pengguna</a></li>

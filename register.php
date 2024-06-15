@@ -16,7 +16,7 @@ if ($koneksi->connect_error) {
 if (isset($_POST['register'])) {
     $user_name = $_POST['user_name'];
     $name = $_POST['name'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Amankan password dengan hash
     
     $sql = "INSERT INTO users (user_name, name, password) VALUES ('$user_name', '$name', '$password')";
     if ($koneksi->query($sql) === TRUE) {
@@ -31,7 +31,7 @@ if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $user_name = $_POST['user_name'];
     $name = $_POST['name'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Amankan password dengan hash
     
     $sql = "UPDATE users SET user_name='$user_name', name='$name', password='$password' WHERE id=$id";
     if ($koneksi->query($sql) === TRUE) {
@@ -59,9 +59,21 @@ if (isset($_GET['delete'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register & Manage Users</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Hubungkan file CSS eksternal -->
-  <link rel="stylesheet" href="data.css"> <!-- Hubungkan file CSS eksternal -->
+    <link rel="stylesheet" href="styles.css"> <!-- Hubungkan file CSS eksternal -->
+    <link rel="stylesheet" href="data.css"> <!-- Hubungkan file CSS eksternal -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .password-container {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -69,14 +81,15 @@ if (isset($_GET['delete'])) {
             <h1>e-Dokber</h1>
             <nav>
                 <ul class="nav">
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="home.php">Home</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="input.php">Input Dokumen</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="data.php">Dokumen Masuk</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="data_keluar.php">Dokumen Keluar</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="register.php">Pengguna</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="report.php">Laporan Masuk</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="report_keluar.php">Laporan Keluar</a></li>
-                    <li style="margin:0;padding:0;"><a class="text-white me-5" href="logout.php">Logout</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="home.php">Home</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="input.php">Input Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="input_keluar.php">Input Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="data.php">Dokumen Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="data_keluar.php">Dokumen Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="register.php">Pengguna</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="report.php">Laporan Masuk</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="report_keluar.php">Laporan Keluar</a></li>
+                    <li style="margin:0;padding:0;"><a class="text-white me-3" href="logout.php">Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -94,9 +107,12 @@ if (isset($_GET['delete'])) {
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 password-container">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
+                <span class="password-toggle" onclick="togglePassword('password')">
+                    <i class="bi bi-eye-slash"></i>
+                </span>
             </div>
             <button type="submit" class="btn btn-primary" name="register">Register</button>
         </form>
@@ -120,9 +136,12 @@ if (isset($_GET['delete'])) {
                     echo "<tr>
                         <td>{$row['user_name']}</td>
                         <td>{$row['name']}</td>
-                        <td>{$row['password']}</td>
                         <td>
-                            <!-- <button class='btn btn-success' data-bs-toggle='modal' data-bs-target='#editModal-{$row['id']}'>Edit</button> -->
+                        <span id='pw-{$row['id']}' style='display:none'>{$row['password']}</span>
+                        <span id='pw-hidden-{$row['id']}' style='display:inline'>*****</span>
+                        <button class='btn btn-info ms-3' onclick='togglePasswordView({$row['id']})'>Show</button>
+                        </td>
+                        <td>
                             <a href='?delete={$row['id']}' class='btn btn-danger'>Delete</a>
                         </td>
                     </tr>";
@@ -153,9 +172,12 @@ if (isset($_GET['delete'])) {
                                     <label for='modal_name-{$row['id']}' class='form-label'>Name</label>
                                     <input type='text' class='form-control' id='modal_name-{$row['id']}' name='name' value='{$row['name']}' required>
                                 </div>
-                                <div class='mb-3'>
+                                <div class='mb-3 password-container'>
                                     <label for='modal_password-{$row['id']}' class='form-label'>Password</label>
-                                    <input type='password' class='form-control' id='modal_password-{$row['id']}' name='password' value='{$row['password']}' required>
+                                    <input type='password' class='form-control' id='modal_password-{$row['id']}' name='password' required>
+                                    <span class='password-toggle' onclick='togglePassword(\"modal_password-{$row['id']}\")'>
+                                        <i class='bi bi-eye-slash'></i>
+                                    </span>
                                 </div>
                                 <button type='submit' class='btn btn-primary' name='update'>Update</button>
                             </form>
@@ -169,6 +191,38 @@ if (isset($_GET['delete'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb4NjsG6F7lRGuvAN/jDuoSiG6jowMk5igKJAq3GQ5r7LoFo2" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-q2i2UQ4MtPSzK/8a7TP5Qf28DFEzDA+S3+L5D+z6u3ZftOF/4M76t21CA8V04Yx7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.4/font/bootstrap-icons.min.js"></script>
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            }
+        }
+
+        function togglePasswordView(userId) {
+            const pwSpan = document.getElementById(`pw-${userId}`);
+            const pwHiddenSpan = document.getElementById(`pw-hidden-${userId}`);
+            const btnShow = event.target;
+
+            if (pwHiddenSpan.style.display === 'none') {
+                pwHiddenSpan.style.display = 'inline';
+                pwSpan.style.display = 'none';
+                btnShow.textContent = 'Show';
+            } else {
+                pwHiddenSpan.style.display = 'none';
+                pwSpan.style.display = 'inline';
+                btnShow.textContent = 'Hide';
+            }
+        }
+    </script>
 </body>
 </html>
 

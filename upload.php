@@ -82,6 +82,7 @@ if ($uploadOk == 1) {
     $nomor_surat = $_POST['nomor_surat'];
     $twu = $_POST['twu'];
     $isi = $_POST['isi'];
+    $status = $_POST['status'];
     $disposisi = $_POST['disposisi'];
 
     if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -97,10 +98,11 @@ if ($uploadOk == 1) {
                 isi = '$isi', 
                 disposisi = '$disposisi', 
                 file_upload = '$file_upload'
+                fstatus = '$status'
                 WHERE no_id = $id";
     } else {
-        $sql = "INSERT INTO tbl_berita (nomor_agenda, dari, kepada, tembusan, klasifikasi, nomor_surat, twu, isi, disposisi, file_upload) 
-                VALUES ('$nomor_agenda', '$dari', '$kepada', '$tembusan', '$klasifikasi', '$nomor_surat', '$twu', '$isi', '$disposisi', '$file_upload')";
+        $sql = "INSERT INTO tbl_berita (nomor_agenda, dari, kepada, tembusan, klasifikasi, nomor_surat, twu, isi, status, disposisi, file_upload) 
+                VALUES ('$nomor_agenda', '$dari', '$kepada', '$tembusan', '$klasifikasi', '$nomor_surat', '$twu', '$isi', '$status', '$disposisi', '$file_upload')";
     }
 
     if ($koneksi->query($sql) === TRUE) {

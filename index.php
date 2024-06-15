@@ -38,12 +38,20 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
   </head>
   <body>
     <div class="container d-flex justify-content-center align-items-center" style="height: 100vh">
         <div>
             <marquee behavior="1" direction="1">
-                <h1>E - Dokber</h1>
+                <h1 class="text-light">E - Dokber</h1>
             </marquee>
             <div class="card w-100 shadow-lg">
                 <div class="row">

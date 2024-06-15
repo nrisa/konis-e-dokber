@@ -14,36 +14,47 @@ if ($koneksi->connect_error) {
     die("Koneksi gagal: " . $koneksi->connect_error);
 }
 
-// Query untuk mengambil data dari tabel tbl_berita dengan status = 0
-$query = "SELECT * FROM tbl_berita WHERE status = 1 ORDER BY no_id DESC";
+// Inisialisasi tanggal default
+$start_date = $_GET['start_date'] ?? date('Y-m-d');
+$end_date = $_GET['end_date'] ?? date('Y-m-d');
+
+// Query untuk mengambil data dari tabel tbl_berita dengan filter pencarian dan status = 0
+$query = "SELECT * FROM tbl_berita 
+          WHERE status = 1
+          AND DATE(twu) BETWEEN '$start_date' AND '$end_date'
+          ORDER BY no_id DESC";
 $tampil = mysqli_query($koneksi, $query);
 
 // Lebar halaman landscape
-$pdf = new FPDF('L', 'mm', 'A3'); // 'L' untuk Landscape, 'mm' untuk milimeter, 'A4' untuk ukuran halaman
+$pdf = new FPDF('p', 'mm', 'A4'); // 'L' untuk Landscape, 'mm' untuk milimeter, 'A4' untuk ukuran halaman
 $pdf->AddPage();
 $pdf->SetFont('Arial', 'B', 9);
-$pdf->Cell(0, 10, 'Laporan Masuk', 0, 1, 'C');
+$pdf->Cell(0, 10, "MARKAS BESAR ANGKATAN LAU", 0, 1, 'C');
+$pdf->Cell(0, 10, "PUSAT KOMANDO DAN PENGADILAN", 0, 1, 'C');
+$pdf->Cell(0, 10, '', 'B', 1); // Garis sebagai pemisah
+$pdf->Ln(10);
+$pdf->Cell(0, 10, 'Laporan Keluar', 0, 1, 'C');
 $pdf->Ln(10);
 
 // Hitung lebar kolom dinamis
 $widths = [
-    10,  // No
-    40,  // Nomor Agenda
-    30,  // Dari
-    30,  // Kepada
-    30,  // Tembusan
-    30,  // Klasifikasi
-    30,  // Nomor Dokumen
+    5,  // No
+    20,  // Nomor Agenda
+    15,  // Dari
+    15,  // Kepada
+    15,  // Tembusan
+    15,  // Klasifikasi
+    15,  // Nomor Dokumen
     20,  // TWU
-    70,  // Isi
-    30   // Disposisi
+    35,  // Isi
+    15   // Disposisi
 ];
 
 // Buat header tabel
 $pdf->SetFont('Arial', 'B', 6);
 $header = [
     'No', 'Nomor Agenda', 'Dari', 'Kepada', 'Tembusan', 
-    'Klasifikasi', 'Nomor Dokumen', 'TWU', 'Isi', 'Disposisi'
+    'Klasifikasi', 'No Dokumen', 'TWU', 'Isi', 'Disposisi'
 ];
 for ($i = 0; $i < count($header); $i++) {
     $pdf->Cell($widths[$i], 10, $header[$i], 1);
