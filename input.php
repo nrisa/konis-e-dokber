@@ -158,8 +158,8 @@ if (isset($_POST['bsimpan'])) {
             <input type="text" id="nomor_surat" name="nomor_surat" value="<?= $nomor_surat ?>" required>
           </div>
           <div>
-            <label for="twu">TWU:</label>
-            <input type="date" id="twu" style="width: 100%;height: 45px;border-radius: 8px;border: 1px solid gray" name="twu" value="<?= $twu ?>" required>
+            <label for="twu">TWU</label>
+            <input type="text" id="twu" name="twu" value="<?= $twu ?>" required>
           </div>
           <div>
             <label for="isi">Isi:</label>

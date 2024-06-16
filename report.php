@@ -19,7 +19,7 @@ $end_date = $_GET['end_date'] ?? date('Y-m-d');
 // Query untuk mengambil data dari tabel tbl_berita dengan filter tanggal
 $query = "SELECT * FROM tbl_berita 
           WHERE status = 0 
-          AND DATE(twu) BETWEEN '$start_date' AND '$end_date'
+          AND DATE(tanggal) BETWEEN '$start_date' AND '$end_date'
           ORDER BY no_id DESC";
 $tampil = mysqli_query($koneksi, $query);
 ?>
